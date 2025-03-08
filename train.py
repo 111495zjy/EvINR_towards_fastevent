@@ -127,7 +127,7 @@ def main(args):
         intensity1 = intensity_preds.cpu().detach().numpy()
         image_data = (intensity1*255).astype(np.uint8)
         image = Image.fromarray(image_data)
-        output_path = os.path.join('/content/EvINR/logs', 'output_image.png')
+        output_path = os.path.join('/content/EvINR_towards_fastevent/logs', 'output_image.png')
         image.save(output_path)
 
         log_intensity_preds = model(events.timestamps+0.001)
@@ -135,7 +135,7 @@ def main(args):
         intensity1 = intensity_preds.cpu().detach().numpy()
         image_data = (intensity1*255).astype(np.uint8)
         image = Image.fromarray(image_data)
-        output_path = os.path.join('/content/EvINR/logs', 'output_image_0.001.png')
+        output_path = os.path.join('/content/EvINR_towards_fastevent/logs', 'output_image_0.001.png')
         image.save(output_path)
 
 
@@ -149,7 +149,7 @@ def main(args):
 
             # 将 NumPy 数组转换为 PIL 图像对象
             image = Image.fromarray(image_data)
-            output_path = os.path.join('/content/EvINR/logs', 'output_image_{}.png'.format(i))
+            output_path = os.path.join('/content/EvINR_towards_fastevent/logs', 'output_image_{}.png'.format(i))
             image.save(output_path)
 
 
