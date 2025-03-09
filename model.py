@@ -39,7 +39,33 @@ class EvINRModel(nn.Module):
             log_intensity_preds.reshape(log_intensity_preds.shape[0], -1).mean(dim=-1)
         )
         return (temperal_loss + spatial_loss + const_loss)
-    
+'''
+    def get_losses(self, log_intensity_preds, event_frames):
+    # 计算 temporal loss
+          event_frame_preds = log_intensity_preds[1:] - log_intensity_preds[:-1]
+          temperal_loss = F.mse_loss(event_frame_preds, event_frames[:-1])
+
+    # 计算空间梯度
+          x_grad = log_intensity_preds[:, 1:, :, :] - log_intensity_preds[:, :-1, :, :]
+          y_grad = log_intensity_preds[:, :, 1:, :] - log_intensity_preds[:, :, :-1, :]
+
+    # 计算权重 alpha (反比于 event_frames 大小)
+          alpha = 1 / (1 + event_frames.abs())  # 形状为 (B, H, W, C)
+
+    # 让 alpha 形状匹配 x_grad 和 y_grad
+          alpha_x = alpha[:, 1:, :, :]  # 对齐 x_grad
+          alpha_y = alpha[:, :, 1:, :]  # 对齐 y_grad
+
+    # 计算 weighted spatial loss
+          spatial_loss = ((alpha_x * x_grad.abs()).mean() + (alpha_y * y_grad.abs()).mean())
+
+    # loss term to keep the average intensity of each frame constant
+          const_loss = 0.05 * torch.var(
+              log_intensity_preds.reshape(log_intensity_preds.shape[0], -1).mean(dim=-1)
+              )
+
+          return temperal_loss + 0.001 * spatial_loss + const_loss
+'''
     def tonemapping(self, log_intensity_preds, gamma=0.6):
         intensity_preds = torch.exp(log_intensity_preds).detach()
         # Reinhard tone-mapping
