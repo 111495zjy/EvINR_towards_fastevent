@@ -4,14 +4,14 @@ import torch.nn.functional as F
 import numpy as np
 
 class EvINRModel(nn.Module):
-    def __init__(self, n_layers=3, d_hidden=512, d_neck=256, H=260, W=346, recon_colors=True,num_frames = 40):
+    def __init__(self, n_layers=3, d_hidden=512, d_neck=256, H=260, W=346, recon_colors=True,num_frames = 20):
         super().__init__()
 
         self.recon_colors = recon_colors
         self.d_output = H * W * 3 if recon_colors else H * W
         self.resfield_config = {
         'resfield_layers': [1,2,3],
-        'composition_rank': 512,
+        'composition_rank': 40,
         'capacity': num_frames, #num of frames
         }
         self.res_net = SirenMLP(
@@ -23,21 +23,14 @@ class EvINRModel(nn.Module):
         self.H, self.W = H, W
         
     def forward(self, timestamps, frame_id):
-    # 调试输出输入的时间戳和帧号
-      print(f"Input timestamps shape: {timestamps.shape}, Frame ID shape: {frame_id.shape}")
-    
       log_intensity_preds = self.res_net(timestamps, frame_id)
     
-    # 检查网络输出
-      print(f"log_intensity_preds shape before reshaping: {log_intensity_preds.shape}")
 
       if self.recon_colors:
           log_intensity_preds = log_intensity_preds.reshape(-1, self.H, self.W, 3)
       else:
           log_intensity_preds = log_intensity_preds.reshape(-1, self.H, self.W, 1)
     
-    # 输出重构后的形状
-      print(f"log_intensity_preds shape after reshaping: {log_intensity_preds.shape}")
       return log_intensity_preds
     
     def get_losses(self, log_intensity_preds, event_frames):
@@ -119,11 +112,15 @@ class ResFieldLinear(torch.nn.Linear):
             self.weight.view(-1, 1)
         ).permute(1, 0).view(-1, *self.weight.shape) # F_out*F_in, C -> C, F_out, F_in
 
-        if weight.shape[0] == 1 or len(weight.shape) == 2:
-            return torch.nn.functional.linear(input, weight.squeeze(0), self.bias)
-        else:
+
             # (B, F_out, F_in) x (B, F_in, S) -> (B, F_out, S)
-            return (weight[frame_id] @ input.permute(0, 2, 1) + self.bias.view(1, -1, 1)).permute(0, 2, 1) # B, S, F_out
+        #print(f"input shape: {input.shape}")
+        #print(f"input.unsqueeze(-1) shape: {input.unsqueeze(-1).shape}")
+        #print(f"weight shape: {weight[frame_id].shape}")
+
+        output = torch.bmm(weight[frame_id],input.unsqueeze(-1)).squeeze(-1) + self.bias
+        #print(f"output shape: {output.shape}")
+        return output # B, S, F_out
 
     def extra_repr(self) -> str:
         _str = super(ResFieldLinear, self).extra_repr()
@@ -157,7 +154,7 @@ class SirenMLP(torch.nn.Module):
         """
         super().__init__()
         # resfield parameters
-        composition_rank = resfield_config.get('composition_rank', 10)
+        composition_rank = resfield_config.get('composition_rank', 512)
         resfield_layers = resfield_config.get('resfield_layers', [])
         capacity = resfield_config.get('capacity', 0)
 
@@ -168,8 +165,8 @@ class SirenMLP(torch.nn.Module):
             _rank = composition_rank if i in resfield_layers else 0
             _rank = _rank[i] if not isinstance(_rank, int) else _rank
             # create a linear layer
-            lin = ResFieldLinear(dims[i], dims[i + 1], rank=_rank, capacity=capacity,)
 
+            lin = ResFieldLinear(dims[i], dims[i + 1], rank=_rank, capacity=capacity,)
             # apply siren inicialization
             lin.apply(self.first_layer_sine_init if i == 0 else self.sine_init)
             self.net.append(lin)
