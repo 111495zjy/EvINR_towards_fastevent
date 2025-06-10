@@ -9,7 +9,7 @@ from torch.utils.tensorboard import SummaryWriter
 from tqdm import trange, tqdm
 import random
 from event_data import EventData
-from model_res import EvINRModel
+from model import EvINRModel
 import cv2
 import math
 from skimage.metrics import structural_similarity
@@ -46,7 +46,7 @@ def main(args):
     events.stack_event_frames(args.train_resolution)
     print(f"Number of frames: {len(events.timestamps)}")
     model = EvINRModel(
-        args.net_layers, args.net_width, H=events.H, W=events.W, recon_colors=args.color_event,num_frames = len(events.timestamps)
+        args.net_layers, args.net_width, H=events.H, W=events.W, recon_colors=args.color_event
     ).to(args.device)
     print(f'Start training ...')
     optimizer = torch.optim.AdamW(params=model.net.parameters(), lr=3e-4)
@@ -59,7 +59,7 @@ def main(args):
         optimizer.zero_grad()
         
         #events.stack_event_frames(30+random.randint(1, 100))
-        log_intensity_preds = model(events.timestamps,range(len(events.timestamps)))
+        log_intensity_preds = model(events.timestamps)
         loss = model.get_losses(log_intensity_preds, events.event_frames)
         loss.backward()
         optimizer.step()
@@ -74,7 +74,7 @@ def main(args):
 
     with torch.no_grad():
         #val_timestamps = torch.linspace(0, 1, args.val_resolution).to(args.device).reshape(-1, 1)
-        log_intensity_preds = model(events.timestamps,range(len(events.timestamps)))
+        log_intensity_preds = model(events.timestamps)
         intensity_preds = model.tonemapping(log_intensity_preds).squeeze(-1)
         for i in range(0, intensity_preds.shape[0]):
             intensity1 = intensity_preds[i].cpu().detach().numpy()
