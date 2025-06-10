@@ -11,7 +11,7 @@
 3.**安装依赖**
    ```bash
    cd /content/EvINR_towards_fastevent
-   pip install -r requirements.txt
+
 
    
 
@@ -19,6 +19,9 @@
    python /content/EvINR_towards_fastevent/txt_npy.py
 
    python train.py -n /content/EvINR_towards_fastevent -d /content/EvINR_towards_fastevent/gun_bullet_mug.npy
+
+
+
 
 
 ```
