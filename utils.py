@@ -16,20 +16,6 @@ def events_to_event_frame(event_stream, H, W):
         print(H, W)
         raise ValueError()
     event_frame = np.bincount(abs_coords, weights=ps, minlength=H*W).reshape([H, W,1])
-    '''
-    # 遍历矩阵 (从第二行第二列到倒数第二行倒数第二列)
-    for i in range(1, event_frame.shape[0] - 1):
-        for j in range(1, event_frame.shape[1] - 1):
-        # 提取 3x3 区域
-            neighborhood = event_frame[i-1:i+2, j-1:j+2]
-            center = neighborhood[1, 1]
-            surrounding = np.delete(neighborhood.flatten(), 4)  # 去掉中心点
-
-        # 判断条件：周围全是 0 且中心点大于阈值
-            if np.all(surrounding == 0) and center >=1:
-                event_frame[i, j] = 0  # 符合条件则置为 0
-    event_frame = event_frame.reshape([H, W,1])
-    '''
     return event_frame
 
 def quad_bayer_to_rgb_d2(bayer):
