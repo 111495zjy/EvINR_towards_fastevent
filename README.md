@@ -23,7 +23,7 @@
    
 6.**训练模型**
    ```
-   python train.py -n /content/EvINR_towards_fastevent -d /content/EvINR_towards_fastevent/gun_bullet_mug.npy
+python train.py -n /content/EvINR_towards_fastevent -d /content/EvINR_towards_fastevent/gun_bullet_mug.npy
    ```
 
 notes(需要修改的文件地址):
