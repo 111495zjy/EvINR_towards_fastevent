@@ -5,12 +5,17 @@
 1. **克隆仓库**
    ```bash
    git clone https://github.com/111495zjy/EvINR_towards_fastevent.git
-
+2. **解压高速数据集**
+   ```bash
    unzip /content/drive/MyDrive/gun_bullet_mug.zip -d /content/
-
+3.**安装依赖**
+   ```bash
    cd /content/EvINR_towards_fastevent
 
+4**将txt转为npy格式**
+   ```bash
    pip install -r requirements.txt
+
 
    python /content/EvINR_towards_fastevent/txt_npy.py
 
