@@ -102,4 +102,4 @@ class SineLayer(nn.Module):
         if self.is_last:
             return self.omega_0 * self.linear(input)
         else:
-            return torch.sin(omega)*torch.exp(-scale.abs().square()-scale_orth.abs().square())
+            return torch.sin(omega)#*torch.exp(-scale.abs().square()-scale_orth.abs().square())
