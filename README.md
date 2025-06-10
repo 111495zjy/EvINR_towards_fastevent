@@ -10,16 +10,17 @@
    ```
    unzip /content/drive/MyDrive/gun_bullet_mug.zip -d /content/
    ```
-3.**安装依赖**
+3.**将txt文件转为npy文件**
+   ```
+   python /content/EvINR_towards_fastevent/txt_npy.py
+   ```
+4.**安装依赖**
    ```
    cd /content/EvINR_towards_fastevent
    pip install -r requirements.txt
    pip install lpips
    ```
-4.**将txt文件转为npy文件**
-   ```
-   python /content/EvINR_towards_fastevent/txt_npy.py
-   ```
+
 5.**训练模型**
    ```
    python train.py -n /content/EvINR_towards_fastevent -d /content/EvINR_towards_fastevent/gun_bullet_mug.npy
