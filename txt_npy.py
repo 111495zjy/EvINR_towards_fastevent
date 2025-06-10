@@ -1,7 +1,7 @@
 import numpy as np
 
-txt_file_path = '/content/EvINR_towards_fastevent/gun_bullet_gnome.txt'
-npy_file_path = '/content/EvINR_towards_fastevent/gun_bullet_gnome.npy'
+txt_file_path = '/content/EvINR_towards_fastevent/gun_bullet_mug.txt'
+npy_file_path = '/content/EvINR_towards_fastevent/gun_bullet_mug.npy'
 
 H = 480  # 这里假设图像高度为 480，请根据实际情况修改
 
