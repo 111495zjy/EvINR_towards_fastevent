@@ -3,23 +3,27 @@
 ## 快速开始
 
 1. **克隆仓库**
-   ```bash
+   ```
    git clone https://github.com/111495zjy/EvINR_towards_fastevent.git
+   ```
 2. **解压高速数据集**
-   ```bash
+   ```
    unzip /content/drive/MyDrive/gun_bullet_mug.zip -d /content/
+   ```
 3.**安装依赖**
-   ```bash
+   ```
    cd /content/EvINR_towards_fastevent
-
-
-   
-
-
+   pip install -r requirements.txt
+   pip install lpips
+   ```
+4.**将txt文件转为npy文件**
+   ```
    python /content/EvINR_towards_fastevent/txt_npy.py
-
+   ```
+5.**训练模型**
+   ```
    python train.py -n /content/EvINR_towards_fastevent -d /content/EvINR_towards_fastevent/gun_bullet_mug.npy
-
+   ```
 
 
 
