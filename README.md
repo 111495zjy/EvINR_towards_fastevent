@@ -1,3 +1,22 @@
+# EvINR_towards_fastevent - 使用指南
+
+## 快速开始
+
+1. **克隆仓库**
+   ```bash
+   git clone https://github.com/111495zjy/EvINR_towards_fastevent.git
+
+   unzip /content/drive/MyDrive/gun_bullet_mug.zip -d /content/
+
+   cd /content/EvINR_towards_fastevent
+
+   pip install -r requirements.txt
+
+   python /content/EvINR_towards_fastevent/txt_npy.py
+
+   python train.py -n /content/EvINR_towards_fastevent -d /content/EvINR_towards_fastevent/gun_bullet_mug.npy
+
+
 ```
 @article{wang2024EvINR,
   title={Revisit Event Generation Model: Self-Supervised Learning of Event-to-Video Reconstruction with Implicit Neural Representations},
