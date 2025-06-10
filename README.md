@@ -20,8 +20,8 @@
    pip install -r requirements.txt
    pip install lpips
    ```
-
-5.**训练模型**
+   
+6.**训练模型**
    ```
    python train.py -n /content/EvINR_towards_fastevent -d /content/EvINR_towards_fastevent/gun_bullet_mug.npy
    ```
