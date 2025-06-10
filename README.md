@@ -11,10 +11,9 @@
 3.**安装依赖**
    ```bash
    cd /content/EvINR_towards_fastevent
-
-4**将txt转为npy格式**
-   ```bash
    pip install -r requirements.txt
+
+   
 
 
    python /content/EvINR_towards_fastevent/txt_npy.py
