@@ -26,9 +26,11 @@
    python train.py -n /content/EvINR_towards_fastevent -d /content/EvINR_towards_fastevent/gun_bullet_mug.npy
    ```
 
-
-
-
+notes(需要修改的文件地址):
+   ```
+            #输出图片的地址
+            train.py line 85:output_path = os.path.join('/content/EvINR_towards_fastevent/logs', 'output_image_{}.png'.format(i))
+   ```
 ```
 @article{wang2024EvINR,
   title={Revisit Event Generation Model: Self-Supervised Learning of Event-to-Video Reconstruction with Implicit Neural Representations},
